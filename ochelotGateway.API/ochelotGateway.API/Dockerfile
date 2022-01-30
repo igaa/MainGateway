@@ -13,6 +13,6 @@ RUN dotnet publish -c Release -o out
 # Generate runtime image
 FROM mcr.microsoft.com/dotnet/sdk:6.0-focal
 WORKDIR /app
-EXPOSE 80
+EXPOSE 5550
 COPY --from=build-env /app/out .
 ENTRYPOINT ["dotnet", "ochelotGateway.API.dll"]
