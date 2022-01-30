@@ -59,5 +59,19 @@
       ],
       "UpstreamPathTemplate": "/api/Nasabah/edit",
       "UpstreamHttpMethod": [ "Put" ]
-    }]
+    },
+    {
+      "DownstreamPathTemplate": "/api/rest_v1/page/summary/Daftar_kota_di_Indonesia_menurut_provinsi",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "id.wikipedia.org",
+          "Port": 443
+        }
+      ],
+      "UpstreamPathTemplate": "/api/master/namaKota",
+      "UpstreamHttpMethod": [ "Get" ]
+    }
+
+  ]
 }
