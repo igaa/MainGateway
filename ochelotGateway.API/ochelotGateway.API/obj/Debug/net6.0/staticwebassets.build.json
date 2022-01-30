@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "Uesd9USGAA0ZiFI/DBsl84L1PwLB79Uwq7844t0XLc4=",
+  "Source": "ochelotGateway.API",
+  "BasePath": "_content/ochelotGateway.API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
