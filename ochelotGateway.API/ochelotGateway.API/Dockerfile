@@ -1,26 +1,18 @@
-FROM mcr.microsoft.com/dotnet/aspnet:6.0-focal AS base
+# Get Base Image (Full .NET Core SDK)
+FROM mcr.microsoft.com/dotnet/sdk:6.0-focal AS build-env
 WORKDIR /app
-EXPOSE 5050
 
-ENV ASPNETCORE_URLS=http://+:5050
+# Copy csproj and restore
+COPY *.csproj ./
+RUN dotnet restore
 
-# Creates a non-root user with an explicit UID and adds permission to access the /app folder
-# For more info, please refer to https://aka.ms/vscode-docker-dotnet-configure-containers
-RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
-USER appuser
+# Copy everything else and build
+COPY . ./
+RUN dotnet publish -c Release -o out
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0-focal AS build
-WORKDIR /src
-COPY ["ochelotGateway.API/ochelotGateway.API.csproj", "ochelotGateway.API/"]
-RUN dotnet restore "ochelotGateway.API/ochelotGateway.API.csproj"
-COPY . .
-WORKDIR "/src/ochelotGateway.API"
-RUN dotnet build "ochelotGateway.API.csproj" -c Release -o /app/build
-
-FROM build AS publish
-RUN dotnet publish "ochelotGateway.API.csproj" -c Release -o /app/publish /p:UseAppHost=false
-
-FROM base AS final
+# Generate runtime image
+FROM mcr.microsoft.com/dotnet/sdk:6.0-focal
 WORKDIR /app
-COPY --from=publish /app/publish .
+EXPOSE 80
+COPY --from=build-env /app/out .
 ENTRYPOINT ["dotnet", "ochelotGateway.API.dll"]
